@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="明日序是一款以「日」为单位的极简日程应用，覆盖今日执行、明日规划、构想笔记、每周复盘与桌面小部件。">
+  <title>明日序 · 别空想未来，先搞定明天</title>
+  <style>
+    :root {
+      --bg: #F2F3F7;
+      --surface: #FFFFFF;
+      --ink: #1C1C1E;
+      --ink-2: #6D6D72;
+      --ink-3: #8E8E93;
+      --blue: #007AFF;
+      --green: #34C759;
+      --orange: #FF9500;
+      --purple: #AF52DE;
+      --red: #FF3B30;
+      --line: #E5E5EA;
+      --soft: #F7F7F9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      object-fit: cover;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 14px;
+      color: var(--ink-2);
+    }
+
+    .nav-links a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--blue);
+    }
+
+    .nav-version {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #EAF2FF;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 36px;
+      align-items: center;
+      padding: 84px 0 96px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border: 1px solid #DCE5F2;
+      border-radius: 999px;
+      background: var(--surface);
+      font-size: 13px;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .hero-eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .hero h1 {
+      max-width: 100%;
+      font-size: clamp(36px, 3.9vw, 42px);
+      line-height: 1.18;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: transparent;
+      background: linear-gradient(90deg, #1C1C1E 0%, #007AFF 72%, #5AC8FA 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      max-width: 520px;
+      margin-top: 22px;
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--ink-2);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #FFFFFF;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid #D6D6DC;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+
+    .hero-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-meta span + span::before {
+      content: "";
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #C7C7CC;
+    }
+
+    .phone-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone {
+      width: min(300px, 78vw);
+      aspect-ratio: 430 / 880;
+      padding: 10px;
+      border: 10px solid #17171A;
+      border-radius: 46px;
+      background: var(--surface);
+      box-shadow: 0 28px 70px rgba(28, 28, 46, 0.16);
+    }
+
+    .phone img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 30px;
+      background: var(--bg);
+    }
+
+        .section {
+      padding: 96px 0;
+    }
+
+    .section-alt {
+      background: transparent;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 44px;
+    }
+
+    .section h2 {
+      font-size: 32px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .section-sub {
+      max-width: 420px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--ink-3);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      min-height: 220px;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .feature-number {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .feature-card h3 {
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .feature-card p {
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--ink-2);
+    }
+
+    .feature-line {
+      width: 28px;
+      height: 4px;
+      margin-top: 14px;
+      border-radius: 999px;
+    }
+
+    .feature-card:nth-child(1) .feature-line { background: var(--blue); }
+    .feature-card:nth-child(2) .feature-line { background: var(--green); }
+    .feature-card:nth-child(3) .feature-line { background: var(--purple); }
+    .feature-card:nth-child(4) .feature-line { background: var(--orange); }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .mini-phone {
+      width: min(238px, 72vw);
+      margin: 0 auto;
+      padding: 9px;
+      border: 8px solid #17171A;
+      border-radius: 38px;
+      background: var(--surface);
+      box-shadow: 0 20px 44px rgba(28, 28, 46, 0.12);
+    }
+
+    .mini-phone img {
+      width: 100%;
+      aspect-ratio: 430 / 880;
+      object-fit: cover;
+      border-radius: 26px;
+      background: var(--bg);
+    }
+
+    .screen-caption {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+
+    .widget-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .widget-card {
+      min-height: 232px;
+      padding: 22px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .widget-kicker {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--ink-3);
+    }
+
+    .widget-title {
+      margin-top: 16px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .widget-desc {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--ink-2);
+    }
+
+    .widget-date {
+      margin-top: 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-2);
+    }
+
+    .widget-progress-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--ink-2);
+    }
+
+    .widget-track {
+      height: 5px;
+      margin-top: 8px;
+      border-radius: 999px;
+      background: #E2E2E8;
+      overflow: hidden;
+    }
+
+    .widget-fill {
+      width: 58%;
+      height: 100%;
+      border-radius: 999px;
+      background: var(--green);
+    }
+
+    .widget-tasks {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--ink-2);
+    }
+
+    .widget-input {
+      margin-top: 16px;
+      padding: 10px;
+      border: 1px dashed #C9CBD2;
+      border-radius: 10px;
+      background: var(--surface);
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+
+    .widget-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .widget-chip {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 7px;
+      background: rgba(0, 122, 255, 0.12);
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .widget-status {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255, 149, 0, 0.14);
+      color: var(--orange);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .widget-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+
+    .download-panel {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
+      align-items: center;
+      padding: 42px 44px;
+      border: 1px solid #DDE0E8;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F4F8FF 100%);
+    }
+
+    .download-panel h2 {
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .download-desc {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--ink-2);
+    }
+
+    .file-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .file-info div {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #E2E5EC;
+    }
+
+    .file-info span {
+      display: block;
+      font-size: 11px;
+      color: var(--ink-3);
+    }
+
+    .file-info strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 13px;
+      font-weight: 800;
+      word-break: break-all;
+    }
+
+    .download-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .download-actions .btn {
+      width: 100%;
+      height: 56px;
+      border-radius: 14px;
+      font-size: 16px;
+    }
+
+    .download-note {
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--ink-3);
+    }
+
+    .site-footer {
+      padding: 28px 0 34px;
+      border-top: 1px solid var(--line);
+      background: var(--bg);
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .footer-brand img {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 56px 0 64px;
+      }
+
+      .feature-grid,
+      .widget-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .screen-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .download-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+        white-space: normal;
+      }
+
+      .hero-sub {
+        font-size: 15px;
+      }
+
+      .section {
+        padding: 72px 0;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-sub {
+        margin-top: 12px;
+      }
+
+      .feature-grid,
+      .widget-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .download-panel {
+        padding: 26px 22px;
+      }
+
+      .file-info {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .hero h1,
+      .section-head h2,
+      .download-panel h2 {
+        animation: heading-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      @keyframes heading-in {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="#top">
+        <img src="assets/logo.png" alt="明日序图标">
+        明日序
+      </a>
+      <nav class="nav-links" aria-label="网站导航">
+        <a href="#features">核心功能</a>
+        <a href="#screens">界面预览</a>
+        <a href="#widgets">桌面小部件</a>
+        <a href="#download">下载</a>
+      </nav>
+      <span class="nav-version">V1.0.0</span>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="wrap hero">
+      <div>
+        <div class="hero-eyebrow">明日序 · 极简日程应用</div>
+        <h1>别空想未来，<em>先搞定明天。</em></h1>
+        <p class="hero-sub">以「日」为单位的轻量日程工具。今日执行、明日规划、构想笔记、每周复盘，放进同一个简单工作流。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="downloads/mingrixu-v1.0.0.apk" download="mingrixu-v1.0.0.apk">下载 Android APK</a>
+          <a class="btn btn-secondary" href="#features">查看核心功能</a>
+        </div>
+        <div class="hero-meta">
+          <span>Android</span>
+          <span>V1.0.0</span>
+          <span>约 51.1 MB</span>
+          <span>本地存储 · 无广告</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <img src="assets/screens/today.png" alt="明日序今日执行界面">
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section-alt">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>四个页面，一个轻量工作流</h2>
+          <div class="section-sub">不堆复杂项目管理，只围绕“今天要做什么”展开。</div>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-number">01</div>
+            <h3>今日执行</h3>
+            <p>分类与自定义标签快速筛选；顶部实时进度；完成、延期、放弃三种状态；左滑即可编辑或删除。</p>
+            <div class="feature-line"></div>
+          </article>
+          <article class="feature-card">
+            <div class="feature-number">02</div>
+            <h3>明日规划</h3>
+            <p>月历一眼看出有任务的日期；习惯设置起止日期后自动铺排；长按日期直接跳转到对应执行页。</p>
+            <div class="feature-line"></div>
+          </article>
+          <article class="feature-card">
+            <div class="feature-number">03</div>
+            <h3>构想笔记</h3>
+            <p>文字与图片穿插编辑，图片大小自由调整；想法成熟后一键转为明日任务。</p>
+            <div class="feature-line"></div>
+          </article>
+          <article class="feature-card">
+            <div class="feature-number">04</div>
+            <h3>复盘看板</h3>
+            <p>周报自动统计完成率、放弃率与延期率；近 4 周趋势搭配执行状态与改善建议。</p>
+            <div class="feature-line"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="screens" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>界面预览</h2>
+          <div class="section-sub">三张真实界面截图：明日规划、构想笔记、复盘看板。</div>
+        </div>
+        <div class="screen-grid">
+          <div>
+            <div class="mini-phone">
+              <img src="assets/screens/tomorrow.png" alt="明日序明日规划界面">
+            </div>
+            <div class="screen-caption">明日规划</div>
+          </div>
+          <div>
+            <div class="mini-phone">
+              <img src="assets/screens/ideas.png" alt="明日序构想笔记界面">
+            </div>
+            <div class="screen-caption">构想笔记</div>
+          </div>
+          <div>
+            <div class="mini-phone">
+              <img src="assets/screens/review.png" alt="明日序复盘看板界面">
+            </div>
+            <div class="screen-caption">复盘看板</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="widgets" class="section-alt">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>桌面小部件</h2>
+          <div class="section-sub">不用打开 App，也能完成今日一瞥和快速记录。</div>
+        </div>
+        <div class="widget-grid">
+          <article class="widget-card">
+            <div class="widget-kicker">今日概览 · 4 x 2</div>
+            <div class="widget-title">今日进度</div>
+            <div class="widget-date">8月5日 星期三</div>
+            <div class="widget-progress-row"><span>完成 3 / 7</span><span>43%</span></div>
+            <div class="widget-track"><div class="widget-fill"></div></div>
+            <div class="widget-tasks">
+              <span>整理本周计划</span>
+              <span>完成产品原型</span>
+              <span>跑步 3 公里</span>
+            </div>
+          </article>
+          <article class="widget-card">
+            <div class="widget-kicker">明日计划 · 2 x 2 / 4 x 2</div>
+            <div class="widget-title">明天要做什么</div>
+            <div class="widget-desc">展示明日计划前 3 条，点击直达规划页并选中明天。</div>
+            <div class="widget-tasks">
+              <span>写下明天小目标</span>
+              <span>早起拉伸 15 分钟</span>
+            </div>
+          </article>
+          <article class="widget-card">
+            <div class="widget-kicker">快速添加 · 2 x 2</div>
+            <div class="widget-title">随手记一个计划</div>
+            <div class="widget-input">写下一个计划...</div>
+            <div class="widget-chips">
+              <span class="widget-chip">工作</span>
+              <span class="widget-chip">学习</span>
+              <span class="widget-chip">生活</span>
+              <span class="widget-chip">副业</span>
+            </div>
+          </article>
+          <article class="widget-card">
+            <div class="widget-kicker">习惯打卡 · 规划中</div>
+            <div class="widget-title">今天习惯</div>
+            <div class="widget-desc">直接勾选完成，状态与 App 实时同步。</div>
+            <div class="widget-tasks">
+              <span>早起拉伸 15 分钟</span>
+              <span>英语单词 30 个</span>
+            </div>
+            <div class="widget-status">规划中</div>
+          </article>
+        </div>
+        <div class="widget-note">第一版计划：Android 今日概览 + 明日计划小组件，点击小组件可直接进入对应页面。</div>
+      </div>
+    </section>
+
+    <section id="download" class="section">
+      <div class="wrap">
+        <div class="download-panel">
+          <div>
+            <h2>下载明日序 V1.0.0</h2>
+            <p class="download-desc">点击按钮直接下载 APK 安装包，无需注册，不包含任何广告。</p>
+            <div class="file-info">
+              <div><span>文件</span><strong>mingrixu-v1.0.0.apk</strong></div>
+              <div><span>大小</span><strong>约 51.1 MB</strong></div>
+              <div><span>系统</span><strong>Android</strong></div>
+              <div><span>更新日期</span><strong>2026-08-05</strong></div>
+            </div>
+          </div>
+          <div class="download-actions">
+            <a class="btn btn-primary" href="downloads/mingrixu-v1.0.0.apk" download="mingrixu-v1.0.0.apk">下载 APK · V1.0.0</a>
+            <div class="download-note">安装时如提示未知来源，允许本次安装即可。数据默认保存在本机。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="明日序图标">
+        明日序
+      </div>
+      <div>别空想未来，先搞定明天。</div>
+      <div>© 2026 明日序</div>
+    </div>
+  </footer>
+</body>
+</html>
