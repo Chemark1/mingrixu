@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="明日序版本更新记录，包含每个版本的改动内容与日期。">
+  <title>版本更新记录 · 明日序</title>
+  <style>
+    :root {
+      --bg: #F2F3F7;
+      --surface: #FFFFFF;
+      --ink: #1C1C1E;
+      --ink-2: #6D6D72;
+      --ink-3: #8E8E93;
+      --blue: #007AFF;
+      --green: #34C759;
+      --orange: #FF9500;
+      --purple: #AF52DE;
+      --line: #E5E5EA;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      object-fit: cover;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 14px;
+      color: var(--ink-2);
+    }
+
+    .nav-links a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--blue);
+    }
+
+    .nav-version {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #EAF2FF;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .page {
+      padding: 76px 0 96px;
+    }
+
+    .page h1 {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .page-sub {
+      max-width: 620px;
+      margin-top: 16px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--ink-2);
+    }
+
+    .version-list {
+      display: grid;
+      gap: 18px;
+      margin-top: 44px;
+    }
+
+    .version-card {
+      padding: 26px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .version-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .version-name {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .version-date {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--bg);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-2);
+    }
+
+    .version-card ul {
+      margin-top: 14px;
+      padding-left: 20px;
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--ink-2);
+    }
+
+    .preview-note {
+      margin-top: 22px;
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+
+    .site-footer {
+      padding: 28px 0 34px;
+      border-top: 1px solid var(--line);
+      background: var(--bg);
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .footer-brand img {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 680px) {
+      .nav {
+        height: auto;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 14px 0;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+        gap: 14px;
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
+        overflow-x: auto;
+        font-size: 13px;
+      }
+
+      .nav-links a {
+        white-space: nowrap;
+      }
+
+      .nav-version {
+        margin-left: auto;
+      }
+
+      .page {
+        padding: 56px 0 72px;
+      }
+
+      .page h1 {
+        font-size: 30px;
+      }
+
+      .version-card {
+        padding: 20px;
+      }
+
+      .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .wrap {
+        padding: 0 18px;
+      }
+
+      .version-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.png" alt="明日序图标">
+        明日序
+      </a>
+      <nav class="nav-links" aria-label="网站导航">
+        <a href="index.html">首页</a>
+        <a href="index.html#download">下载</a>
+        <a href="versions.html">更新日志</a>
+      </nav>
+      <span class="nav-version">V1.0.1</span>
+    </div>
+  </header>
+
+  <main class="wrap page">
+    <h1>版本更新记录</h1>
+    <p class="page-sub">记录明日序每个正式版本和开发预览版本的改动内容与发布时间。</p>
+
+    <div class="version-list">
+      <section class="version-card">
+        <div class="version-head">
+          <div class="version-name">V1.0.1 正式版</div>
+          <span class="version-date">2026-08-13</span>
+        </div>
+        <ul>
+          <li>执行页加号直接打开“任务 / 习惯”二合一弹窗，顶部切换，默认任务</li>
+          <li>任务模式只保留标题、分类、自定义标签和日期调整，移除描述与落地项/构想项</li>
+          <li>习惯模式沿用起止日期、分类、自定义标签界面</li>
+          <li>笔记左滑滑出删除按钮，点击后才删除，未滑动时不显示删除背景</li>
+          <li>日历显示真实节日名称，休/班保留角标并正常显示农历</li>
+          <li>桌面日历同步节日、农历显示规则，跨天自动刷新到当天</li>
+        </ul>
+      </section>
+
+      <section class="version-card">
+        <div class="version-head">
+          <div class="version-name">V1.0.0 首发版</div>
+          <span class="version-date">2026-08-05</span>
+        </div>
+        <ul>
+          <li>今日执行：任务、进度、完成/延期/放弃</li>
+          <li>明日规划：月历、习惯、计划</li>
+          <li>构想笔记：图文笔记、转任务</li>
+          <li>复盘看板：周报、完成率、趋势</li>
+          <li>桌面小部件：今日概览、明日计划、快速添加</li>
+        </ul>
+      </section>
+
+      <section class="version-card">
+        <div class="version-head">
+          <div class="version-name">开发预览版本</div>
+          <span class="version-date">2026-08-12 / 08-13</span>
+        </div>
+        <ul>
+          <li>V1.0.51：规划页跨天自动刷新、笔记左滑、执行页加号</li>
+          <li>V1.0.52：笔记左滑改为点击删除、加号弹窗统一习惯 UI、节日隐藏农历</li>
+          <li>V1.0.53：节日名称与休/班农历、笔记滑动背景修复、任务/习惯选择</li>
+          <li>V1.0.54：任务支持分类与自定义标签、桌面日历同步、节日显示调整</li>
+          <li>V1.0.55：二合一弹窗、任务仅标题、移除落地项/构想项</li>
+        </ul>
+      </section>
+    </div>
+
+    <p class="preview-note">V1.0.1 已包含开发预览阶段确认的全部改动。更早的逐版说明未保留，未单独记录。</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="明日序图标">
+        明日序
+      </div>
+      <div>别空想未来，先搞定明天。</div>
+      <div>© 2026 明日序</div>
+    </div>
+  </footer>
+</body>
+</html>
